@@ -32,19 +32,19 @@ func TestQueue(t *testing.T) {
 		t.Errorf("expected queue to have 3 nodes instead got %v", nNodes)
 	}
 
-	// Expect the first element to be "c"
+	// Expect the first element to be "a"
 	firstKey := q.keys[0]
-	if firstKey != "c" {
-		t.Errorf("expected first key to be c instead got %v", firstKey)
+	if firstKey != "a" {
+		t.Errorf("expected first key to be a instead got %v", firstKey)
 	}
 
-	// Test that Next returns the key with hihest priority and modifies the queue correctyl
+	// Test that Next returns the key with lowest priority and modifies the queue correctyl
 	nextKey, nextPriority := q.Next()
-	if nextKey != "c" {
-		t.Errorf("expected next key to be c instead got %v", nextKey)
+	if nextKey != "a" {
+		t.Errorf("expected next key to be a instead got %v", nextKey)
 	}
-	if nextPriority != 3 {
-		t.Errorf("expected priority of c to be 3 instead got %v", nextPriority)
+	if nextPriority != 1 {
+		t.Errorf("expected priority of a to be 1 instead got %v", nextPriority)
 	}
 
 	// Get returns the priority of the key and does not mutate the queue

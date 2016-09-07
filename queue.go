@@ -23,7 +23,7 @@ func (q *Queue) Less(i, j int) bool {
 	a := q.keys[i]
 	b := q.keys[j]
 
-	return q.nodes[a] > q.nodes[b]
+	return q.nodes[a] < q.nodes[b]
 }
 
 // Set updates or inserts a new key in the priority queue
