@@ -13,7 +13,7 @@ func (q *Queue) Len() int {
 	return len(q.keys)
 }
 
-// Swap is parto of sort.Interface
+// Swap is part of sort.Interface
 func (q *Queue) Swap(i, j int) {
 	q.keys[i], q.keys[j] = q.keys[j], q.keys[i]
 }

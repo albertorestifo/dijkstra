@@ -51,9 +51,11 @@ func (graph Graph) Path(start, target string) (path []string, cost int, err erro
 			cost = node.cost
 
 			nKey := node.key
-			for _, ok := previous[nKey]; ok; nKey = previous[nKey] {
+			for nKey != start {
 				path = append(path, nKey)
+				nKey = previous[nKey]
 			}
+
 			break
 		}
 
@@ -85,6 +87,9 @@ func (graph Graph) Path(start, target string) (path []string, cost int, err erro
 			}
 		}
 	}
+
+	// add the origin at the end of the path
+	path = append(path, start)
 
 	// reverse the path because it was popilated
 	// in reverse, form target to start

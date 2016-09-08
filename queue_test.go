@@ -1,9 +1,6 @@
 package dijkstra
 
-import (
-	"strconv"
-	"testing"
-)
+import "testing"
 
 func TestQueue(t *testing.T) {
 	q := NewQueue()
@@ -14,8 +11,8 @@ func TestQueue(t *testing.T) {
 	}
 
 	q.Set("a", 1)
-	q.Set("b", 2)
 	q.Set("c", 3)
+	q.Set("b", 2)
 
 	// the queue is not empty
 	if isEmpty := q.IsEmpty(); isEmpty {
@@ -73,14 +70,5 @@ func BenchmarkQueueReadWrite(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		q.Set("k", 6)
 		q.Next()
-	}
-}
-
-func BenchmarkQueueWrite(b *testing.B) {
-	q := NewQueue()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		q.Set(strconv.Itoa(i), i)
 	}
 }
