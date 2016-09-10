@@ -1,5 +1,5 @@
 /*
-Package dijkstra it's an highly optimised implementation of the Dijkstra
+Package dijkstra is an highly optimised implementation of the Dijkstra
 algorithm, used for find the shortest path between points of a graph.
 
 A graph is a map of points and map to the neighbouring points in the graph and
