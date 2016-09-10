@@ -1,6 +1,9 @@
 package dijkstra
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestEmptyGraph(t *testing.T) {
 	g := make(Graph)
@@ -98,4 +101,17 @@ func BenchmarkPath(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		g.Path("a", "c")
 	}
+}
+
+func ExampleGraph_Path() {
+	g := Graph{
+		"a": {"b": 20, "c": 80},
+		"b": {"a": 20, "c": 20},
+		"c": {"a": 80, "b": 20},
+	}
+
+	path, cost, _ := g.Path("a", "c") // skipping error handling
+
+	fmt.Printf("path: %v, cost: %v", path, cost)
+	// Output: path: [a b c], cost: 40
 }
