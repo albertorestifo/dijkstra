@@ -2,7 +2,8 @@ package dijkstra
 
 import "sort"
 
-// Queue is a priority queue implementation
+// Queue is a basic priority queue implementation, where the node with the
+// lowest priority is kept as first element in the queue
 type Queue struct {
 	keys  []string
 	nodes map[string]int
@@ -28,17 +29,15 @@ func (q *Queue) Less(i, j int) bool {
 
 // Set updates or inserts a new key in the priority queue
 func (q *Queue) Set(key string, priority int) {
-	// Initialize the map if not done so already
-
-	// Inserts a new key if we don't have it already
+	// inserts a new key if we don't have it already
 	if _, ok := q.nodes[key]; !ok {
 		q.keys = append(q.keys, key)
 	}
 
-	// Set the priority for the key
+	// set the priority for the key
 	q.nodes[key] = priority
 
-	// Sort the keys array
+	// sort the keys array
 	sort.Sort(q)
 }
 
@@ -66,7 +65,7 @@ func (q *Queue) Get(key string) (priority int, ok bool) {
 	return
 }
 
-// NewQueue creates a new empty queue
+// NewQueue creates a new empty priority queue
 func NewQueue() *Queue {
 	var q Queue
 	q.nodes = make(map[string]int)

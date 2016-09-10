@@ -1,33 +1,45 @@
-// Package dijkstra implements the Dijkstra shortest path algorithm
+/*
+Package dijkstra it's an highly optimised implementation of the Dijkstra
+algorithm, used for find the shortest path between points of a graph.
+
+A graph is a map of points and map to the neighbouring points in the graph and
+the cost to reach them.
+A trivial example of a graph definition is:
+
+	Graph{
+		"a": {"b": 10, "c": 20},
+		"b": {"a": 50},
+		"c": {"b": 10, "a": 25},
+	}
+
+*/
 package dijkstra
 
 import "fmt"
 
-// Node is the rapresentation fo node in the graph with a key and a cost
-type Node struct {
+type node struct {
 	key  string
 	cost int
 }
 
-// Neighbors is a map of adjacent nodes and the cost to reac them
-type Neighbors map[string]int
+// Graph is a rappresentation of how the points in our graph are connected
+// between each other
+type Graph map[string]map[string]int
 
-// Graph is a rappresentation of our graph
-type Graph map[string]Neighbors
-
-// Path find the shortest path between start and target
-func (graph Graph) Path(start, target string) (path []string, cost int, err error) {
-	if len(graph) == 0 {
+// Path finds the shortest path between start and target, also returning the
+// total cost of the found path.
+func (g Graph) Path(start, target string) (path []string, cost int, err error) {
+	if len(g) == 0 {
 		err = fmt.Errorf("cannot find path in empty map")
 		return
 	}
 
 	// ensure start and target are part of the graph
-	if _, ok := graph[start]; !ok {
+	if _, ok := g[start]; !ok {
 		err = fmt.Errorf("cannot find start %v in graph", start)
 		return
 	}
-	if _, ok := graph[target]; !ok {
+	if _, ok := g[target]; !ok {
 		err = fmt.Errorf("cannot find target %v in graph", target)
 		return
 	}
@@ -43,14 +55,14 @@ func (graph Graph) Path(start, target string) (path []string, cost int, err erro
 	for !frontier.IsEmpty() {
 		// get the node in the frontier with the lowest cost (or priority)
 		aKey, aPriority := frontier.Next()
-		node := Node{aKey, aPriority}
+		n := node{aKey, aPriority}
 
 		// when the node with the lowest cost in the frontier is target, we can
 		// compute the cost and path and exit the loop
-		if node.key == target {
-			cost = node.cost
+		if n.key == target {
+			cost = n.cost
 
-			nKey := node.key
+			nKey := n.key
 			for nKey != start {
 				path = append(path, nKey)
 				nKey = previous[nKey]
@@ -60,10 +72,10 @@ func (graph Graph) Path(start, target string) (path []string, cost int, err erro
 		}
 
 		// add the current node to the explored set
-		explored[node.key] = true
+		explored[n.key] = true
 
 		// loop all the neighboring nodes
-		for nKey, nCost := range graph[node.key] {
+		for nKey, nCost := range g[n.key] {
 			// skip alreadt-explored nodes
 			if explored[nKey] {
 				continue
@@ -71,18 +83,18 @@ func (graph Graph) Path(start, target string) (path []string, cost int, err erro
 
 			// if the node is not yet in the frontier add it with the cost
 			if _, ok := frontier.Get(nKey); !ok {
-				previous[nKey] = node.key
-				frontier.Set(nKey, node.cost+nCost)
+				previous[nKey] = n.key
+				frontier.Set(nKey, n.cost+nCost)
 				continue
 			}
 
 			frontierCost, _ := frontier.Get(nKey)
-			nodeCost := node.cost + nCost
+			nodeCost := n.cost + nCost
 
 			// only update the cost of this node in the frontier when
 			// it's below what's currently set
 			if nodeCost < frontierCost {
-				previous[nKey] = node.key
+				previous[nKey] = n.key
 				frontier.Set(nKey, nodeCost)
 			}
 		}
