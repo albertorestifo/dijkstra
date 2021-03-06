@@ -22,7 +22,7 @@ type node struct {
 	cost int
 }
 
-// Graph is a rappresentation of how the points in our graph are connected
+// Graph is a representation of how the points in our graph are connected
 // between each other
 type Graph map[string]map[string]int
 
@@ -39,7 +39,7 @@ func (g Graph) Path(start, target string) (path []string, cost int, err error) {
 		err = fmt.Errorf("cannot find start %v in graph", start)
 		return
 	}
-	if _, ok := g[target]; !ok {
+	if !g.ensureTargetArePart(target) {
 		err = fmt.Errorf("cannot find target %v in graph", target)
 		return
 	}
@@ -110,4 +110,18 @@ func (g Graph) Path(start, target string) (path []string, cost int, err error) {
 	}
 
 	return
+}
+
+func (g Graph) ensureTargetArePart(target string) bool {
+	for node, _ := range g {
+		if _, ok := g[node][target]; ok {
+			return true
+		}
+	}
+	
+	if _, ok := g[target]; ok {
+		return true
+	}
+	
+	return false
 }
